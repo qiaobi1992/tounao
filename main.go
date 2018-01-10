@@ -36,7 +36,8 @@ func init() {
 
 			requestBody, e := ioutil.ReadAll(req.Body)
 			if util.Check(e) {
-				req.Body = ioutil.NopCloser(bytes.NewReader(lib.Injection(requestBody, ctx)))
+				go lib.Injection(requestBody, ctx)
+				req.Body = ioutil.NopCloser(bytes.NewReader(requestBody))
 			}
 		}
 		return
@@ -49,7 +50,8 @@ func init() {
 		if ctx.Req.URL.Path == `/question/fight/findQuiz` || ctx.Req.URL.Path == `/question/fight/choose` {
 			responseBody, e := ioutil.ReadAll(resp.Body)
 			if util.Check(e) {
-				resp.Body = ioutil.NopCloser(bytes.NewReader(lib.Injection(responseBody, ctx)))
+				go lib.Injection(responseBody, ctx)
+				resp.Body = ioutil.NopCloser(bytes.NewReader(responseBody))
 			}
 		}
 
@@ -77,14 +79,14 @@ func Run(port string) {
 		util.Check(e)
 	}()
 
-	go func() {
-		crtSever := http.NewServeMux()
-		crtSever.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Disposition", "attachment; filename=ca.crt")
-			w.Header().Set("Content-Type", "application/octet-stream")
-			w.Write(goproxy.CA_CERT)
-		})
-		e := http.ListenAndServe(":8080", crtSever)
-		util.Check(e)
-	}()
+	//go func() {
+	//	crtSever := http.NewServeMux()
+	//	crtSever.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	//		w.Header().Set("Content-Disposition", "attachment; filename=ca.crt")
+	//		w.Header().Set("Content-Type", "application/octet-stream")
+	//		w.Write(goproxy.CA_CERT)
+	//	})
+	//	e := http.ListenAndServe(":8080", crtSever)
+	//	util.Check(e)
+	//}()
 }
