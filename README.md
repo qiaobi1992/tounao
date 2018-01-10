@@ -18,4 +18,4 @@
 
 # 示例
 ![权重提示](screenshot/161515556265_.pic.jpg)
-![连胜](screenshot/161515556264_.pic.jpg)
+![连胜](screenshot/151515556264_.pic.jpg)
